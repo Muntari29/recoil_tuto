@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import Toggle from '../components/Toggle';
 import { useTasks } from '../contexts/TaskProvider';
+import taskState from '../gs';
 
 interface Props {
   id: string;
@@ -10,11 +12,20 @@ interface Props {
 
 const Task = ({ id, content, completed, ...props }: Props) => {
   const { updateTask, removeTask } = useTasks();
+  const [todoList, setTodoList] = useRecoilState(taskState);
+  
+  const updateTask2 = (id: string, status: boolean) => {
+    const newList = todoList.map((todo) => todo.id === id ? {...todo, completed: status} : todo)
+    setTodoList(newList)
+    
+  }
+
+
   return (
     <ListItem {...props}>
       <Toggle
         on={completed}
-        onChange={(e) => updateTask(id, e.target.checked)}
+        onChange={(e) => updateTask2(id, e.target.checked)}
       />
       <Content completed={completed}>{content}</Content>
       <RemoveButton onClick={() => removeTask(id)}>Remove</RemoveButton>
