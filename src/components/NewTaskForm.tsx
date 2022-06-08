@@ -1,14 +1,31 @@
 import { FormEvent, useState } from 'react';
-import { useTasks } from '../contexts/TaskProvider';
+// import { useTasks } from '../contexts/TaskProvider';
 import styled from '@emotion/styled';
+import { useSetRecoilState } from 'recoil';
+import taskState from '../gs';
+// import { ITask } from './TaskList';
+
+let id = 0;
 
 const NewTaskForm = (props: any) => {
   const [task, setTask] = useState('');
-  const { addTask } = useTasks();
+  // const { addTask } = useTasks();
+  const setTodoList = useSetRecoilState(taskState);
+
+  const addTask2 = () => {
+    const newTask = {
+      id: String(++id),
+      content: task,
+      completed: false
+    }
+    setTodoList((prev) => [...prev, newTask])
+    setTask('')
+  }
+
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    addTask(task);
+    addTask2()
     setTask('');
   };
   return (
