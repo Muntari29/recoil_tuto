@@ -17,7 +17,10 @@ const Task = ({ id, content, completed, ...props }: Props) => {
   const updateTask2 = (id: string, status: boolean) => {
     const newList = todoList.map((todo) => todo.id === id ? {...todo, completed: status} : todo)
     setTodoList(newList)
-    
+  }
+
+  const removeTask2 = (id: string) => {
+    setTodoList(todoList.filter((todo) => todo.id !== id))
   }
 
 
@@ -28,7 +31,7 @@ const Task = ({ id, content, completed, ...props }: Props) => {
         onChange={(e) => updateTask2(id, e.target.checked)}
       />
       <Content completed={completed}>{content}</Content>
-      <RemoveButton onClick={() => removeTask(id)}>Remove</RemoveButton>
+      <RemoveButton onClick={() => removeTask2(id)}>Remove</RemoveButton>
     </ListItem>
   );
 };
